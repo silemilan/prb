@@ -1,0 +1,45 @@
+import subprocess
+import os
+import shutil
+import datetime
+import re
+
+def add_to_cronetab():
+    pattern = re.compile(r'vmbackup\.py$')
+    with open('/etc/crontab', 'r') as rfile:
+#         contents = rfile.read()
+#         match = pattern.match(pattern, contents)
+# 0 0 * * * python ~/bckp.py
+
+def backup_servers():
+    table = subprocess.check_output('virsh list --all', shell=True)
+    raws_from_table = table.splitlines()
+    del raws_from_table[0:2]
+    del raws_from_table[-1]
+    each_raw_toarray = []
+    for raw in raws_from_table:
+        each_raw_toarray.append(raw.split())
+    print(each_raw_toarray)
+    for each_vm in each_raw_toarray:
+        # nesto na fazon num, machine, state = each_vm
+        if each_vm[2] == 'running':
+            #subprocess.check_call('virsh shutdown ' + each_vm[1], shell=True)
+            if each_vm[2] == 'shut'
+                # os.chdir('/var/lib/libvirt/images/f28srv01')
+                bckp_path = os.environ.get('HOME') +'/bckp'
+                if not os.path.exists(bckp_path):
+                    os.makedirs(bckp_path)
+                shutil.copy('/var/lib/libvirt/images/' + each_vm[1]  + '.qcow2', bckp_path + '/' + each_vm[1] + datetime.datetime.now().strftime('%Y%m%d-%H%M%S') + '.qcow2')
+                subprocess.call('virsh start ' + each_vm[1],shell=True)
+
+backup_servers()
+
+
+
+
+
+
+
+
+
+
